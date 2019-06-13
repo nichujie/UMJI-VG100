@@ -18,7 +18,7 @@ void setup() {
   Serial.begin(9600);
   Serial.println("initializing...");
   arm.attach(SERVO_PIN);
-  arm.writeMicroseconds(1500);
+  arm.writeMicroseconds(1800);
   pinMode(6, OUTPUT);
   pinMode(7, OUTPUT);
   pinMode(VEX_MOTOR, OUTPUT);
@@ -48,19 +48,23 @@ void loop() {
   }
   
   if (state == 1){
-    digitalWrite(6, HIGH);
-    digitalWrite(7, LOW);
-    analogWrite(VEX_MOTOR, 180);
-    delay(2000); 
+    arm.writeMicroseconds(1300);
+    delay(500);
+    digitalWrite(6, LOW);
+    digitalWrite(7, HIGH);
+    analogWrite(VEX_MOTOR, 150);
+    delay(3000); 
     digitalWrite(6, HIGH);
     digitalWrite(7, HIGH);
-    arm.writeMicroseconds(2000);
+    delay(200);
+    arm.writeMicroseconds(1000);
+    delay(500);
     state = 0;
   }
   else if (state == 2) {
     digitalWrite(6, HIGH);
     digitalWrite(7, HIGH);
-    arm.writeMicroseconds(1000);
+    arm.writeMicroseconds(1800);
     state = 0;
   }
   Serial.println(state);
