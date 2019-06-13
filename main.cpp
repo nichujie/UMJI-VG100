@@ -2,6 +2,7 @@
 #define VEX_MOTOR 5
 #define SERVO_PIN 10
 #define BUTTON 3
+#define TEST
 
 Servo arm;
 
@@ -13,6 +14,24 @@ int state = 0;
 // 0 idle
 // 1 deploying (button < 1s)
 // 2 retractring (button > 1.5s)
+
+void fang(int t){
+  digitalWrite(6, LOW);
+  digitalWrite(7, HIGH);
+  analogWrite(VEX_MOTOR, 150);
+  delay(t);
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);
+}
+
+void shou(int t){
+  digitalWrite(6, HIGH);
+  digitalWrite(7, LOW);
+  analogWrite(VEX_MOTOR, 150);
+  delay(t);
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);
+}
 
 void setup() {
   Serial.begin(9600);
@@ -30,7 +49,7 @@ void loop() {
   buttonLastState = buttonState;
   buttonState = digitalRead(BUTTON);
 
-  if(!digitalRead(BUTTON)) {
+  if(!buttonState) {
     cnt++;
   }
 
@@ -48,20 +67,18 @@ void loop() {
   }
   
   if (state == 1){
-    arm.writeMicroseconds(1300);
+    arm.writeMicroseconds(1050);
     delay(500);
-    digitalWrite(6, LOW);
-    digitalWrite(7, HIGH);
-    analogWrite(VEX_MOTOR, 150);
-    delay(3000); 
-    digitalWrite(6, HIGH);
-    digitalWrite(7, HIGH);
+    shou(1000);
     delay(200);
-    arm.writeMicroseconds(1000);
+    arm.writeMicroseconds(850);
     delay(500);
     state = 0;
   }
   else if (state == 2) {
+    arm.writeMicroseconds(1300);
+    shou(3000);
+    delay(200);
     digitalWrite(6, HIGH);
     digitalWrite(7, HIGH);
     arm.writeMicroseconds(1800);
