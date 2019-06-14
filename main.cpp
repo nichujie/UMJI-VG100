@@ -1,7 +1,7 @@
 #include <Servo.h>
 #define VEX_MOTOR 5
 #define SERVO_PIN 10
-#define BUTTON 3
+#define BUTTON 11
 #define TEST
 
 Servo arm;
@@ -15,7 +15,7 @@ int state = 0;
 // 1 deploying (button < 1s)
 // 2 retractring (button > 1.5s)
 
-void fang(int t){
+void loose_rope(int t){
   digitalWrite(6, LOW);
   digitalWrite(7, HIGH);
   analogWrite(VEX_MOTOR, 150);
@@ -24,7 +24,7 @@ void fang(int t){
   digitalWrite(7, LOW);
 }
 
-void shou(int t){
+void tight_rope(int t){
   digitalWrite(6, HIGH);
   digitalWrite(7, LOW);
   analogWrite(VEX_MOTOR, 150);
@@ -69,19 +69,16 @@ void loop() {
   if (state == 1){
     arm.writeMicroseconds(1050);
     delay(500);
-    shou(1000);
+    tight_rope(900);
     delay(200);
     arm.writeMicroseconds(850);
     delay(500);
     state = 0;
   }
   else if (state == 2) {
-    arm.writeMicroseconds(1300);
-    shou(3000);
-    delay(200);
-    digitalWrite(6, HIGH);
-    digitalWrite(7, HIGH);
+    loose_rope(1000);
     arm.writeMicroseconds(1800);
+    delay(1000);
     state = 0;
   }
   Serial.println(state);
