@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+        <title>Gantt Chart (G12)</title>
+ 
+        <script src="frappe-gantt.min.js"></script>
+        <link rel="stylesheet" href="frappe-gantt.css">
+    </head>
+<body>
+    <h2>Start Date: 2019-5-20</h2>
+    <h2>End Date: 2019-6-13</h2>
+    <svg id="gantt"></svg>
+ 
+    <script>
+        var tasks = [
+    {
+        id: 'Task 1',
+        name: 'Design and Discussion',
+        start: '2019-5-20',
+        end: '2019-5-26',
+        progress: 100,
+    },
+    {
+        id: 'Task 2',
+        name: 'Fabrication of Demo and Improvement',
+        start: '2019-5-25',
+        end: '2019-6-5',
+        progress: 100,
+        dependencies: 'Task 1'
+    },
+    {
+        id: 'Task 3',
+        name: 'Fabrication of Final Product',
+        start: '2019-6-5',
+        end: '2019-6-12',
+        progress: 100,
+        dependencies: 'Task 2'
+    }
+    ]
+    var gantt = new Gantt("#gantt", tasks);
+    gantt.change_view_mode('Week');
+    </script>
+</body>
+</html>
