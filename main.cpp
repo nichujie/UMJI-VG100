@@ -2,19 +2,20 @@
 #define VEX_MOTOR 5
 #define SERVO_PIN 10
 #define BUTTON 11
-#define TEST
 
 Servo arm;
 
-bool inited = false;
 int cnt = 0;
 int buttonLastState = 1;
 int buttonState = 1;
-int state = 0;
+
 // 0 idle
 // 1 deploying (button < 1s)
 // 2 retractring (button > 1.5s)
+int state = 0;
 
+
+// loose the rope on the bridge top for t millisecond
 void loose_rope(int t){
   digitalWrite(6, LOW);
   digitalWrite(7, HIGH);
@@ -24,6 +25,7 @@ void loose_rope(int t){
   digitalWrite(7, LOW);
 }
 
+// tight the rope on the bridge top for t millisecond
 void tight_rope(int t){
   digitalWrite(6, HIGH);
   digitalWrite(7, LOW);
@@ -34,8 +36,7 @@ void tight_rope(int t){
 }
 
 void setup() {
-  Serial.begin(9600);
-  Serial.println("initializing...");
+  // initialize all ports
   arm.attach(SERVO_PIN);
   arm.writeMicroseconds(1800);
   pinMode(6, OUTPUT);
@@ -53,6 +54,8 @@ void loop() {
     cnt++;
   }
 
+  // determine the state of button
+  // refer to the "state" variable for pressing time
   if(buttonState != buttonLastState) {
     if(buttonState) {
       if(cnt < 300) {
@@ -66,6 +69,7 @@ void loop() {
     }
   }
   
+  // deploy/retract the bridge according to button state
   if (state == 1){
     arm.writeMicroseconds(1050);
     delay(500);
@@ -81,5 +85,4 @@ void loop() {
     delay(1000);
     state = 0;
   }
-  Serial.println(state);
 }
